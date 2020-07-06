@@ -1,6 +1,11 @@
 - hosts: localhost
   connection: local
 
-  # Roles are imported from ansible
-  roles:
-    - role: mysql
+  tasks:
+
+    - name: Install Role MySQL
+      local_action: command ansible-galaxy install -f geerlingguy.mysql
+
+    - name: Installing MYSQL
+      include_role:
+          name: geerlingguy.mysql
