@@ -6,6 +6,16 @@
     - name: Install Role MySQL
       local_action: command ansible-galaxy install -f geerlingguy.mysql
 
+    - name: Check if MYSQL is already installed
+      stat: path=/usr/bin/mysql
+      register: mysql_exists
+
+    - name: Applying role MYSQL
+      command: mv ~/.ansible/roles/geerlingguy.mysql ~/.ansible/roles/pwslab.mysql
+      when: not mysql_exists.stat.exists
+      ignore_errors: yes
+
     - name: Installing MYSQL
       include_role:
-          name: geerlingguy.mysql
+          name: pwslab.mysql
+      when: not mysql_exists.stat.exists
